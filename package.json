@@ -1,7 +1,7 @@
 {
-  "name": "@rpidanny/typescript-package-template",
-  "version": "1.1.1",
-  "description": "Typescript package boilerplate template",
+  "name": "@rpidanny/nietzsche.js",
+  "version": "0.0.0",
+  "description": "Typescript package to download quotes from Goodreads.",
   "main": "dist/index.js",
   "types": "dist/index.d.js",
   "scripts": {
@@ -14,20 +14,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rpidanny/typescript-package-template.git"
+    "url": "git+https://github.com/rpidanny/nietzsche.js.git"
   },
   "keywords": [
     "typescript",
     "javascript",
-    "template",
-    "boilerplate"
+    "quotes",
+    "goodreads",
+    "nietzsche"
   ],
   "author": "Abhishek <abhishek.rpidanny@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rpidanny/typescript-package-template/issues"
+    "url": "https://github.com/rpidanny/nietzsche.js/issues"
   },
-  "homepage": "https://github.com/rpidanny/typescript-package-template#readme",
+  "homepage": "https://github.com/rpidanny/nietzsche.js#readme",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
