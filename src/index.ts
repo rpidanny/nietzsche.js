@@ -1,1 +1,1 @@
-export * from './Nietzsche'
+export * from './Goodreads'

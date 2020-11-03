@@ -4,7 +4,7 @@ import HttpAgent, { HttpsAgent } from 'agentkeepalive'
 
 import * as types from './types'
 
-export class Nietzsche {
+export class Goodreads {
   baseUrl: string
   gotInstance: Got
   constructor(baseUrl: string) {
