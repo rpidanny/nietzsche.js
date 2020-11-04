@@ -42,7 +42,7 @@ Type: `object`
 | ------------- | ------- | -------- | ------------------------------------------------------------- |
 | `tag`         | `None`  | `string` | The name of the tag to search. e.g. `psychology`, `economics` |
 | `concurrency` | `10`    | `number` | The number of parallel requests to goodreads                  |
-| `maxPages`    | `100`   | `number` | The maximum number of pages to search                         |
+| `maxPages`    | `100`   | `number` | The maximum number of pages to get quotes from                |
 
 Response Type: `Array<Quotes>`
 
