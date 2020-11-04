@@ -1,3 +1,10 @@
+# 1.0.0 (2020-11-04)
+
+
+### Features
+
+* add download quotes functions ([#1](https://github.com/rpidanny/nietzsche.js/issues/1)) ([780e074](https://github.com/rpidanny/nietzsche.js/commit/780e074dd51b8a211467ee8f9a292a5163032572))
+
 ## [1.1.1](https://github.com/rpidanny/typescript-package-template/compare/v1.1.0...v1.1.1) (2020-11-02)
 
 
