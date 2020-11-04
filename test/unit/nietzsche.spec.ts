@@ -32,14 +32,14 @@ describe('Nietzsche', () => {
       count: 1,
     }
     nock(baseUrl).get(/.*/).reply(200, rawResponse)
-    const response = await getQuotesByTag('economics')
+    const response = await getQuotesByTag({ tag: 'economics' })
     expect(response).toEqual(expectedResponse)
   })
 
   it('should return parsed quotes from all pages', async () => {
     const expectedResponse = new Array(5).fill(parsedQuotes[0])
     nock(baseUrl).get(/.*/).times(5).reply(200, rawResponse)
-    const response = await getAllQuotesByTag('economics')
+    const response = await getAllQuotesByTag({ tag: 'economics' })
     expect(response).toEqual(expectedResponse)
   })
 })

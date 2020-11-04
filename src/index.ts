@@ -4,11 +4,11 @@ import * as types from './types'
 
 const gr = new Goodreads(config.goodreads.baseUrl)
 
-export const getQuotesByTag = (tag: string, page = 1): Promise<types.GetQuotesResponse> =>
-  gr.getQuotesByTag(tag, page)
+export const getQuotesByTag = (
+  options: types.GetQuotesByTagRequest,
+): Promise<types.GetQuotesResponse> => gr.getQuotesByTag(options.tag, options.page)
 
 export const getAllQuotesByTag = (
-  tag: string,
-  concurrency = 10,
-  maxPages = 100,
-): Promise<Array<types.Quote>> => gr.getAllQuotesByTag(tag, concurrency, maxPages)
+  options: types.GetAllQuotesByTagRequest,
+): Promise<Array<types.Quote>> =>
+  gr.getAllQuotesByTag(options.tag, options.concurrency, options.maxPages)

@@ -20,3 +20,14 @@ export interface GetQuotesResponse {
   totalPages: number
   count: number
 }
+
+export interface GetQuotesByTagRequest {
+  tag: string
+  page?: number
+}
+
+export interface GetAllQuotesByTagRequest {
+  tag: string
+  concurrency?: number
+  maxPages?: number
+}
