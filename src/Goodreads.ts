@@ -2,6 +2,7 @@ import $ from 'cheerio'
 import got, { Got } from 'got'
 import HttpAgent, { HttpsAgent } from 'agentkeepalive'
 
+import chunk from './utils/chunk'
 import * as types from './types'
 
 export class Goodreads {
@@ -101,17 +102,42 @@ export class Goodreads {
     }
   }
 
-  async getAllQuotesByTag(tag: string, maxPages = 100): Promise<Array<types.Quote>> {
-    let nextPage = 1
-    let total
-
+  async getAllQuotesByTag(
+    tag: string,
+    concurrency = 10,
+    maxPages = 100,
+  ): Promise<Array<types.Quote>> {
     let response: Array<types.Quote> = []
-    do {
-      const { quotes, totalPages } = await this.getQuotesByTag(tag, nextPage)
-      nextPage += 1
-      total = totalPages
-      response = response.concat(quotes)
-    } while (nextPage <= total && nextPage <= maxPages)
+
+    // download first page to get total page info
+    const { quotes, totalPages } = await this.getQuotesByTag(tag, 1)
+
+    response = response.concat(quotes)
+
+    // Create an array of page numbers
+    const pageNumbers: Array<number> = Array.from(
+      { length: totalPages < maxPages ? totalPages : maxPages },
+      (_, i) => i + 1,
+    )
+
+    // remove the first page as it has already been downloaded
+    pageNumbers.splice(0, 1)
+
+    // create batches to run in parallel
+    const batches = chunk(pageNumbers, concurrency) as Array<Array<number>>
+
+    for (let i = 0; i < batches.length; i++) {
+      const batch = batches[i]
+      const responses = await Promise.all(
+        batch.map((pageNumber: number) => this.getQuotesByTag(tag, pageNumber)),
+      )
+
+      const batchQuotes = responses.reduce((acc, item) => {
+        acc = acc.concat(item.quotes)
+        return acc
+      }, [] as Array<types.Quote>)
+      response = response.concat(batchQuotes)
+    }
 
     return response
   }

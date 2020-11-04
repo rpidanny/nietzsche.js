@@ -1,4 +1,5 @@
 import nock from 'nock'
+import { performance } from 'perf_hooks'
 
 import { Goodreads } from '../../src'
 
@@ -77,6 +78,26 @@ describe('Goodreads', () => {
       const expectedResponse = new Array(5).fill(parsedQuotes[0])
       nock(baseUrl).get(/.*/).times(5).reply(200, rawResponse)
       const response = await gr.getAllQuotesByTag('economics')
+      expect(response).toEqual(expectedResponse)
+    })
+
+    it('should return parsed quotes from all pages with concurrent requests', async () => {
+      const delayMillis = 500
+      const prescaler = 100
+      const concurrency = 5
+
+      const start = performance.now()
+
+      const expectedResponse = new Array(5).fill(parsedQuotes[0])
+
+      nock(baseUrl).get(/.*/).times(5).delay(delayMillis).reply(200, rawResponse)
+
+      const response = await gr.getAllQuotesByTag('economics', concurrency)
+
+      const end = performance.now()
+      const executionTime = end - start
+      // 2 * delayMillis since we need to get the first page before running in parallel
+      expect(Math.floor(executionTime / prescaler)).toEqual((2 * delayMillis) / prescaler)
       expect(response).toEqual(expectedResponse)
     })
   })
