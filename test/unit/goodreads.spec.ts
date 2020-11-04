@@ -1,7 +1,7 @@
 import nock from 'nock'
 import { performance } from 'perf_hooks'
 
-import { Goodreads } from '../../src'
+import { Goodreads } from '../../src/Goodreads'
 
 describe('Goodreads', () => {
   const rawResponse = {
