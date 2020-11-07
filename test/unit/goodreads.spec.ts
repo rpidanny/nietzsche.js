@@ -154,6 +154,19 @@ describe('Goodreads', () => {
       expect(response).toEqual(expectedResponse)
     })
 
+    it('should fail when path starts with "/"', async () => {
+      expect.assertions(2)
+      try {
+        await gr.getAllQuotesByPath('/quotes/tag/economics')
+      } catch (err) {
+        expect(err).toBeInstanceOf(Error)
+        expect(err).toHaveProperty(
+          'message',
+          '`input` must not start with a slash when using `prefixUrl`',
+        )
+      }
+    })
+
     describe('Request', () => {
       it('should return page with quotes', async () => {
         nock(baseUrl).get(/.*/).reply(200, rawResponse)
