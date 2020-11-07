@@ -1,6 +1,6 @@
 import nock from 'nock'
 
-import { getQuotesByTag, getAllQuotesByTag } from '../../src'
+import { getQuotesByTag, getQuotesByPath, getAllQuotesByTag, getAllQuotesByPath } from '../../src'
 import config from '../../src/config'
 
 describe('Nietzsche', () => {
@@ -24,22 +24,45 @@ describe('Nietzsche', () => {
     },
   ]
 
-  it('should return parsed quotes from a single page', async () => {
-    const expectedResponse = {
-      quotes: parsedQuotes,
-      pageNumber: 1,
-      totalPages: 5,
-      count: 1,
-    }
-    nock(baseUrl).get(/.*/).reply(200, rawResponse)
-    const response = await getQuotesByTag({ tag: 'economics' })
-    expect(response).toEqual(expectedResponse)
+  describe('Quotes by Tag', () => {
+    it('should return parsed quotes from a single page', async () => {
+      const expectedResponse = {
+        quotes: parsedQuotes,
+        pageNumber: 1,
+        totalPages: 5,
+        count: 1,
+      }
+      nock(baseUrl).get(/.*/).reply(200, rawResponse)
+      const response = await getQuotesByTag({ tag: 'economics' })
+      expect(response).toEqual(expectedResponse)
+    })
+
+    it('should return parsed quotes from all pages', async () => {
+      const expectedResponse = new Array(5).fill(parsedQuotes[0])
+      nock(baseUrl).get(/.*/).times(5).reply(200, rawResponse)
+      const response = await getAllQuotesByTag({ tag: 'economics' })
+      expect(response).toEqual(expectedResponse)
+    })
   })
 
-  it('should return parsed quotes from all pages', async () => {
-    const expectedResponse = new Array(5).fill(parsedQuotes[0])
-    nock(baseUrl).get(/.*/).times(5).reply(200, rawResponse)
-    const response = await getAllQuotesByTag({ tag: 'economics' })
-    expect(response).toEqual(expectedResponse)
+  describe('Quotes by Page', () => {
+    it('should return parsed quotes from a single page', async () => {
+      const expectedResponse = {
+        quotes: parsedQuotes,
+        pageNumber: 1,
+        totalPages: 5,
+        count: 1,
+      }
+      nock(baseUrl).get(/.*/).reply(200, rawResponse)
+      const response = await getQuotesByPath({ path: 'quotes/tag/economics' })
+      expect(response).toEqual(expectedResponse)
+    })
+
+    it('should return parsed quotes from all pages', async () => {
+      const expectedResponse = new Array(5).fill(parsedQuotes[0])
+      nock(baseUrl).get(/.*/).times(5).reply(200, rawResponse)
+      const response = await getAllQuotesByPath({ path: 'quotes/tag/economics' })
+      expect(response).toEqual(expectedResponse)
+    })
   })
 })

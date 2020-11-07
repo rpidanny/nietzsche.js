@@ -47,6 +47,21 @@ export class Goodreads {
     throw new Error('Failed to get page by tag')
   }
 
+  async getPageByPath(path: string, page = 1): Promise<types.GoodreadsResponse> {
+    const response = await this.gotInstance(path, {
+      searchParams: {
+        format: 'json',
+        page,
+      },
+    })
+
+    if (response.statusCode === 200 && response.body) {
+      return JSON.parse(response.body)
+    }
+
+    throw new Error('Failed to get page by path')
+  }
+
   parseAndExtractQuotes(html: string): Array<types.Quote> {
     const quotes: Array<types.Quote> = []
     const quoteGroup = $('.quote', html)
@@ -102,15 +117,27 @@ export class Goodreads {
     }
   }
 
-  async getAllQuotesByTag(
-    tag: string,
+  async getQuotesByPath(path: string, pageNumber = 1): Promise<types.GetQuotesResponse> {
+    const rawPage = await this.getPageByPath(path, pageNumber)
+    const quotes = this.parseAndExtractQuotes(rawPage.content_html)
+    return {
+      quotes,
+      pageNumber: rawPage.page,
+      totalPages: rawPage.total_pages,
+      count: quotes.length,
+    }
+  }
+
+  private async getAllQuotes(
+    method: (selector: string, pageNumber: number) => Promise<types.GetQuotesResponse>,
+    selector: string,
     concurrency = 10,
     maxPages = 100,
   ): Promise<Array<types.Quote>> {
     let response: Array<types.Quote> = []
 
     // download first page to get total page info
-    const { quotes, totalPages } = await this.getQuotesByTag(tag, 1)
+    const { quotes, totalPages } = await method(selector, 1)
 
     response = response.concat(quotes)
 
@@ -129,7 +156,7 @@ export class Goodreads {
     for (let i = 0; i < batches.length; i++) {
       const batch = batches[i]
       const responses = await Promise.all(
-        batch.map((pageNumber: number) => this.getQuotesByTag(tag, pageNumber)),
+        batch.map((pageNumber: number) => method(selector, pageNumber)),
       )
 
       const batchQuotes = responses.reduce((acc, item) => {
@@ -140,5 +167,33 @@ export class Goodreads {
     }
 
     return response
+  }
+
+  async getAllQuotesByTag(
+    tag: string,
+    concurrency = 10,
+    maxPages = 100,
+  ): Promise<Array<types.Quote>> {
+    const quotes = await this.getAllQuotes(
+      this.getQuotesByTag.bind(this),
+      tag,
+      concurrency,
+      maxPages,
+    )
+    return quotes
+  }
+
+  async getAllQuotesByPath(
+    path: string,
+    concurrency = 10,
+    maxPages = 100,
+  ): Promise<Array<types.Quote>> {
+    const quotes = await this.getAllQuotes(
+      this.getQuotesByPath.bind(this),
+      path,
+      concurrency,
+      maxPages,
+    )
+    return quotes
   }
 }
