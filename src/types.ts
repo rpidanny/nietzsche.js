@@ -26,8 +26,19 @@ export interface GetQuotesByTagRequest {
   page?: number
 }
 
+export interface GetQuotesByPathRequest {
+  path: string
+  page?: number
+}
+
 export interface GetAllQuotesByTagRequest {
   tag: string
+  concurrency?: number
+  maxPages?: number
+}
+
+export interface GetAllQuotesByPathRequest {
+  path: string
   concurrency?: number
   maxPages?: number
 }
