@@ -46,6 +46,29 @@ Type: `object`
 
 Response Type: `Array<Quotes>`
 
+#### getQuotesByPath(options?)
+
+Type: `object`
+
+| key    | default | type     | description                                                                         |
+| ------ | ------- | -------- | ----------------------------------------------------------------------------------- |
+| `path` | `None`  | `string` | The relative url path to extract quotes from. e.g. `quotes`, `quotes/tag/economics` |
+| `page` | `1`     | `number` | The page number to get the quotes from.                                             |
+
+Response Type: [GetQuotesResponse](#GetQuotesResponse)
+
+#### getAllQuotesByPath(options?)
+
+Type: `object`
+
+| key           | default | type     | description                                                                         |
+| ------------- | ------- | -------- | ----------------------------------------------------------------------------------- |
+| `path`        | `None`  | `string` | The relative url path to extract quotes from. e.g. `quotes`, `quotes/tag/economics` |
+| `concurrency` | `10`    | `number` | The number of parallel requests to goodreads                                        |
+| `maxPages`    | `100`   | `number` | The maximum number of pages to get quotes from                                      |
+
+Response Type: `Array<Quotes>`
+
 ### Types
 
 #### Quote
