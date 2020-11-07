@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/rpidanny/nietzsche.js/compare/v1.0.0...v1.1.0) (2020-11-07)
+
+
+### Features
+
+* add get quote by path ([#6](https://github.com/rpidanny/nietzsche.js/issues/6)) ([a0b97f5](https://github.com/rpidanny/nietzsche.js/commit/a0b97f597cfbb16e61e837c8cfcc0b6515d5baaa))
+
 # 1.0.0 (2020-11-04)
 
 
