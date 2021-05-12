@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/rpidanny/nietzsche.js/compare/v1.1.0...v1.1.1) (2021-05-12)
+
+
+### Bug Fixes
+
+* jest missing types ([#101](https://github.com/rpidanny/nietzsche.js/issues/101)) ([e22ba1a](https://github.com/rpidanny/nietzsche.js/commit/e22ba1ae4a38201dbf1aab387dc44e15763e8253))
+
 # [1.1.0](https://github.com/rpidanny/nietzsche.js/compare/v1.0.0...v1.1.0) (2020-11-07)
 
 
